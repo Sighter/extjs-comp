@@ -13,17 +13,28 @@ class TestTokenizer(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_tokens(self):
+        s = 'Ext.panel("dajdskal")'
+        s2 = '("dajdskal")'
+
+        l = TokenSymbol.match(s)
+        self.assertEquals(3, l)
+
+        l = TokenSymbol.match(s2)
+        self.assertEquals(None, l)
+
+
+
     def test_instance(self):
         
-        t = Scanner('Ext.define')
-
-        src = """Ext.define ("Bla.class", {
+        src = """ Ext.define ("Bla.class", {
                 extend: "somestring"
             });
         """
-        self.assertIsNotNone(t.search(' Ext.define("MyApp.pack.some.MyClass", {'))
-        self.assertIsNotNone(t.search(' Ext.define ("MyApp.pack.some.MyClass", {'))
 
+        t = Tokenizer()
+        token_list = t.tokenizestr(src)
 
-        self.assertEquals('Ext.define', 'definestatement')
-        self.assertEquals('Ext.define', 'bracket')
+        for tok in token_list:
+
+            print tok.__class__, tok.value
