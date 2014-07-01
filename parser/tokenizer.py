@@ -15,10 +15,15 @@ class Scanner():
         return m
 
 class TokenTree:
+    pass
 
 
 class Tokenizer(object):
     """docstring for Tokenizer"""
     def __init__(self):
         pass
+
+    def split_on_alphanumchange(string):
+
+        for c in string:
 
