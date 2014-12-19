@@ -7,10 +7,93 @@ class Eclass(BaseContruct):
     def __init__(self, name, class_body):
         self.name = name
         self.class_body_tokens = class_body
+        self.classbody = None
 
     def get_unrevealed_tokens(self):
         return self.class_body_tokens
 
+    def expand(self):
+        """parse the unparsed classbody"""
+        pass
+
+
+class EclassBody(BaseContruct):
+
+    def __init__(self):
+        self.properties = []
+
+    def match(cls, token_list, startindex, endindex=None):
+        endindex = endindex if endindex else len(token_list)
+
+    def get_properties(self):
+        return self.properties
+
+    @classmethod
+    def from_token_list(cls, token_list):
+        """creates classbody object from a tokenlist
+        this must be an object literal"""
+
+        bracket_stack = []
+
+        eclass_body = EclassBody()
+
+        p = 0
+        while p < len(token_list):
+            tok = token_list[p]
+
+            if isinstance(tok, t.TokenBlockBracket) and tok.value == '{':
+                bracket_stack.append('{')
+
+            if isinstance(tok, t.TokenBlockBracket) and tok.value == '}':
+                bracket_stack.pop()
+
+            if len(bracket_stack) > 1:
+                p += 1
+                continue
+
+            start, end, ecp  = EclassProperty.match(token_list, p)
+
+            if start and end and ecp:
+                eclass_body.properties.append(ecp)
+
+            p += 1
+
+        print eclass_body.properties
+
+        return eclass_body
+
+
+
+class EclassProperty(BaseContruct):
+
+    def __init__(self, name, ptype):
+        self.ptype = ptype
+        self.name = name
+
+    def __repr__(self):
+        return self.name + ": " + self.ptype
+
+    @classmethod
+    def match(cls, token_list, startindex, endindex=None):
+        endindex = endindex if endindex else len(token_list)
+
+        tl = token_list
+
+        if (isinstance(tl[startindex], t.TokenSymbol) and
+                isinstance(tl[startindex + 1], t.TokenColon)):
+
+            name = tl[startindex].value
+            ptype = 'plain'
+            third = tl[startindex + 2]
+
+            if (isinstance(third, t.TokenSymbol) and third.value == 'function'):
+                ptype = 'function'
+
+            ecp = EclassProperty(name, ptype)
+
+            return startindex, startindex + 2, ecp
+        else:
+            return None, None, None
 
 class EclassParser(object):
     """docstring for EclassParser"""
