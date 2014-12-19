@@ -18,7 +18,7 @@ class TestTokenizer(unittest.TestCase):
         s2 = '("dajdskal")'
 
         l = TokenSymbol.match(s)
-        self.assertEquals(3, l)
+        self.assertEquals(9, l)
 
         l = TokenSymbol.match(s2)
         self.assertEquals(None, l)
@@ -26,14 +26,10 @@ class TestTokenizer(unittest.TestCase):
 
 
     def test_instance(self):
-        
-        src = """ Ext.define ("Bla.class", {
-                extend: "somestring"
-            });
-        """
+        f = open("tests/files/Upload.js").read()
 
         t = Tokenizer()
-        token_list = t.tokenizestr(src)
+        token_list = t.tokenizestr(f)
 
         for tok in token_list:
 
