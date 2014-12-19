@@ -19,7 +19,7 @@ class EclassParser(object):
 
     def parse(self, token_list):
         """acts like a factory and onstructs Eclass objects
-        out of a directory"""
+        from a token list"""
 
         classname = ""
         tlist = None
