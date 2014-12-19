@@ -7,5 +7,5 @@ class BaseContruct(object):
     def expand(self):
         raise NotImplementedError
 
-    def getUnrevealedTokens(self):
+    def get_unrevealed_tokens(self):
         return []

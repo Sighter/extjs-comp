@@ -17,6 +17,9 @@ class Token(object):
     def __str__(self):
         return str(self.__class__) + " => " + self.value
 
+    def __repr__(self):
+        return str(self.__class__) + " => " + self.value
+
 
 #
 # couple of simple detected tokens
@@ -164,7 +167,6 @@ class Tokenizer(object):
             length = c.match(s)
 
             if length is not None:
-                print "matched: " + str(c)
                 c = c(s[:length])
                 s = s[length:]
                 return length, c

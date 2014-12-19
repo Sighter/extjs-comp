@@ -6,6 +6,7 @@ from nose.plugins.skip import Skip, SkipTest
 from parser.eclass import EclassParser
 from parser.eclass import Eclass
 from parser.tokenizer import Tokenizer
+from parser import tokenizer as t
 
 class TestEclass(unittest.TestCase):
 
@@ -19,8 +20,8 @@ class TestEclass(unittest.TestCase):
 
         f = open("tests/files/Upload.js").read()
 
-        t = Tokenizer()
-        token_list = t.tokenizestr(f)
+        tz = Tokenizer()
+        token_list = tz.tokenizestr(f)
 
         self.assertTrue(len(token_list) > 0)
 
@@ -28,4 +29,7 @@ class TestEclass(unittest.TestCase):
 
         self.assertIsInstance(tree, Eclass)
         self.assertEquals(tree.name, 'Lier.media.view.Upload')
-        self.assertNotEquals(tree.getUnrevealedTokens(), [])
+        class_body = tree.get_unrevealed_tokens()
+        self.assertNotEquals(class_body, [])
+        self.assertIsInstance(class_body[0], t.TokenBlockBracket)
+        self.assertIsInstance(class_body[len(class_body) - 1], t.TokenBlockBracket)

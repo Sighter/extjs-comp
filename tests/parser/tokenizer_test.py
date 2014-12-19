@@ -31,6 +31,6 @@ class TestTokenizer(unittest.TestCase):
         t = Tokenizer()
         token_list = t.tokenizestr(f)
 
-        for tok in token_list:
+        # for tok in token_list:
 
-            print tok.__class__, tok.value
+        #     print tok.__class__, tok.value
